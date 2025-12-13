@@ -1,18 +1,24 @@
 import cv2
-#we add a socket so we can connect o¡this code to our openFrameworks
+
 import socket
 
-import mediapipe.python.solutions.hands as mp_hands
-import mediapipe.python.solutions.drawing_utils as mp_drawing
-import mediapipe.python.solutions.drawing_styles as mp_drawing_styles
+import mediapipe as mp
+
+mp_hands = mp.solutions.hands
+mp_drawing = mp.solutions.drawing_utils
+mp_drawing_styles = mp.solutions.drawing_styles
 
 def run_hand_tracking_on_webcam():
 
-	#configuration of the socket
+	# configuration of the socket
 	HOST = "127.0.0.1"
 	PORT = 12345
 	sock=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-	sock.connect((HOST,PORT))
+	try:
+        sock.connect((HOST, PORT))
+    except Exception as e:
+        print(f"Could not connect to {HOST}:{PORT} -> {e}")
+        return
 
     cam = cv2.VideoCapture(index=0)
 
@@ -33,12 +39,13 @@ def run_hand_tracking_on_webcam():
 
             if results.multi_hand_landmarks:
                 for hand_landmarks in results.multi_hand_landmarks:
-				#sEND THE landmarks coordinates
-				coords = []
-				for lm in hand_landmarks.landmark:
-					coords.append(f"{lm.x:.3f},{lm.y:.3f}")
-					message=";".join(coords) + "\n"
-					sock.sendall(message.encode("utf-8"))
+                    # Collect the landmarks coordinates for this hand (x,y pairs)
+                    coords = [f"{lm.x:.3f},{lm.y:.3f}" for lm in hand_landmarks.landmark]
+                    message = ";".join(coords) + "\n"
+                    try:
+                        sock.sendall(message.encode("utf-8"))
+                    except Exception as e:
+                        print(f"Socket send error: {e}")
 
 					#Draw the landmarks on the window
 					mp_drawing.draw_landmarks(

@@ -25,4 +25,6 @@ class ofApp : public ofBaseApp{
 
 		ofxTCPServer server;
 		vector<ofPoint> handPoints;
+
+		vector<ofRectangle> shapes;
 };

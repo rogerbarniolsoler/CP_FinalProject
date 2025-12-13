@@ -1,4 +1,5 @@
 #include "ofApp.h"
+#include "main.py"
 
 
 //--------------------------------------------------------------
@@ -10,24 +11,30 @@ void ofApp::setup(){
 
 //--------------------------------------------------------------
 void ofApp::update(){
-	if (server.isConnected())
-	{
-		string msg = server.getLastMessage();
-		if (!msg.empty())
-		{
-			vector<ofPoint> points;
-			stringstream ss(msg); //buscar para que es el ss!!
-			string token;
-			while (getline(ss, token, ';'))
-			{
-				stringstream coord(token);
-				float x, y;
-				char comma;
-				coord >> x >> comma >> y;
-				//scale to the window's setup
-				points.push_back(ofPoint(x * ofGetWidth(), y * ofGetHeight()));
+
+	// if there are any connected clients, try to receive messages from them
+	if (server.getNumClients() > 0) {
+		int lastID = server.getLastID();
+		for (int clientID = 0; clientID <= lastID; ++clientID) {
+			// skip invalid / empty client slots
+			if (server.getClientIP(clientID).empty()) continue;
+
+			std::string msg = server.receive(clientID);
+			if (!msg.empty()) {
+				std::vector<ofPoint> points;
+				std::stringstream ss(msg);
+				std::string token;
+				while (std::getline(ss, token, ';')) {
+					std::stringstream coord(token);
+					float x, y;
+					char comma;
+					if (!(coord >> x >> comma >> y)) continue;
+					// scale to the window's setup
+					points.push_back(ofPoint(x * ofGetWidth(), y * ofGetHeight()));
+				}
+				handPoints = points;
+
 			}
-			handPoints = points;
 		}
 	}
 }
