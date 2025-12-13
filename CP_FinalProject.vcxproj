@@ -82,7 +82,7 @@
 			<PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
 			<RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
 			<WarningLevel>Level3</WarningLevel>
-			<AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+			<AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxNetwork\src</AdditionalIncludeDirectories>
 			<CompileAs>CompileAsCpp</CompileAs>
 			<MultiProcessorCompilation>true</MultiProcessorCompilation>
 			<ObjectFileName>$(IntDir)\Build\%(RelativeDir)\$(Configuration)\</ObjectFileName>
@@ -127,7 +127,7 @@
 			<PreprocessorDefinitions>%(PreprocessorDefinitions)</PreprocessorDefinitions>
 			<RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
 			<WarningLevel>Level3</WarningLevel>
-			<AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+			<AdditionalIncludeDirectories>%(AdditionalIncludeDirectories);src;..\..\..\addons\ofxNetwork\src</AdditionalIncludeDirectories>
 			<CompileAs>CompileAsCpp</CompileAs>
 			<ObjectFileName>$(IntDir)\Build\%(RelativeDir)\$(Configuration)\</ObjectFileName>
 			<LanguageStandard>stdcpplatest</LanguageStandard>
@@ -228,9 +228,23 @@
 	<ItemGroup>
 		<ClCompile Include="src\main.cpp" />
 		<ClCompile Include="src\ofApp.cpp" />
+		<ClCompile Include="src\main.py" />
+		<ClCompile Include="..\..\..\addons\ofxNetwork\src\ofxNetworkUtils.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxNetwork\src\ofxTCPClient.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxNetwork\src\ofxTCPManager.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxNetwork\src\ofxTCPServer.cpp" />
+		<ClCompile Include="..\..\..\addons\ofxNetwork\src\ofxUDPManager.cpp" />
 	</ItemGroup>
 	<ItemGroup>
 		<ClInclude Include="src\ofApp.h" />
+		<ClInclude Include="..\..\..\addons\ofxNetwork\src\ofxNetwork.h" />
+		<ClInclude Include="..\..\..\addons\ofxNetwork\src\ofxNetworkUtils.h" />
+		<ClInclude Include="..\..\..\addons\ofxNetwork\src\ofxTCPClient.h" />
+		<ClInclude Include="..\..\..\addons\ofxNetwork\src\ofxTCPManager.h" />
+		<ClInclude Include="..\..\..\addons\ofxNetwork\src\ofxTCPServer.h" />
+		<ClInclude Include="..\..\..\addons\ofxNetwork\src\ofxTCPSettings.h" />
+		<ClInclude Include="..\..\..\addons\ofxNetwork\src\ofxUDPManager.h" />
+		<ClInclude Include="..\..\..\addons\ofxNetwork\src\ofxUDPSettings.h" />
 	</ItemGroup>
 	<ItemGroup>
 		<ProjectReference Include="$(OF_ROOT)\libs\openFrameworksCompiled\project\vs\openframeworksLib.vcxproj">
