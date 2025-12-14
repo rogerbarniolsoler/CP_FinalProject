@@ -1,5 +1,4 @@
 #include "ofApp.h"
-#include "main.py"
 
 
 //--------------------------------------------------------------
@@ -21,11 +20,11 @@ void ofApp::update(){
 
 			std::string msg = server.receive(clientID);
 			if (!msg.empty()) {
-				std::vector<ofPoint> points;
-				std::stringstream ss(msg);
-				std::string token;
+				vector<ofPoint> points;
+				stringstream ss(msg);
+				string token;
 				while (std::getline(ss, token, ';')) {
-					std::stringstream coord(token);
+					stringstream coord(token);
 					float x, y;
 					char comma;
 					if (!(coord >> x >> comma >> y)) continue;
@@ -41,9 +40,19 @@ void ofApp::update(){
 
 //--------------------------------------------------------------
 void ofApp::draw(){
+	// Right window: hand in real time
+	ofPushMatrix();
+	ofTranslate(ofGetWidth() / 2, 0);
 	ofSetColor(0, 255, 0);
 	for (auto & p : handPoints) {
-		ofDrawCircle(p, 5);
+		ofDrawCircle(p.x - ofGetWidth() / 2, p.y, 5);
+	}
+	ofPopMatrix();
+
+	// Left window: generated shapes
+	ofSetColor(255, 0, 0);
+	for (auto & s : shapes) {
+		ofDrawRectangle(s);
 	}
 }
 

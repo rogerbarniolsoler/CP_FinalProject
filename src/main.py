@@ -15,12 +15,12 @@ def run_hand_tracking_on_webcam():
 	PORT = 12345
 	sock=socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 	try:
-        sock.connect((HOST, PORT))
-    except Exception as e:
-        print(f"Could not connect to {HOST}:{PORT} -> {e}")
-        return
+		sock.connect((HOST, PORT))
+	except Exception as e:
+		print(f"Could not connect to {HOST}:{PORT} -> {e}")
+		return
 
-    cam = cv2.VideoCapture(index=0)
+    cam = cv2.VideoCapture(0)
 
     with mp_hands.Hands(
         model_complexity=0,
