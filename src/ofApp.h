@@ -46,7 +46,8 @@ bool isThumbOpen(const vector<ofPoint> & hand) {
 
 //struct for the shapes that appears on the screen
 struct FiguraViva {
-	ofxSVG * imagenRef; // Puntero al molde original (para no cargar el archivo 100 veces)
+	//ofxSVG * imagenRef; // Puntero al molde original (para no cargar el archivo 100 veces)
+	ofImage * imagenRef; 
 	ofPoint pos;
 	float birthTime;
 	float sizeScale; // For making one bigger than others
@@ -71,7 +72,7 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 
-		void lanzarFigura(string nombreGesto);
+		void lanzarFigura(string nombreGesto, ofPoint position);
 
 		ofxTCPServer server;
 		vector<ofPoint> handPoints;
@@ -79,7 +80,7 @@ class ofApp : public ofBaseApp{
 		vector<TimedShape> shapes;
 		ofVideoGrabber cam; //PC camera
 
-		std::map<string, ofxSVG> galeriaIconos; //si buscamos "corazón" nos da el svg del cora
+		map<string, ofImage> galeriaIconos; //si buscamos "corazón" nos da el svg del cora
 		vector<FiguraViva> figurasActivas; //lista de figuras qeu se estan dibujando en elmomento
 
 		//control del tiempo para no dibujar 50 formas por seg

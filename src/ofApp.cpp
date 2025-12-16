@@ -4,6 +4,9 @@
 //--------------------------------------------------------------
 void ofApp::setup(){
 	ofBackground(0);
+	ofSetFrameRate(60);
+	ofEnableAlphaBlending();
+
 	server.setup(1588); //the same port as in Python
 	server.setMessageDelimiter("\n");
 	std::cout << "Servidor OF escuchando en puerto 1588" << std::endl;
@@ -22,6 +25,11 @@ void ofApp::setup(){
 	galeriaIconos["pez"].load("Gluglu.png");
 	galeriaIconos["burbuja"].load("Bubbles.png");
 	galeriaIconos["pulgar"].load("Posa.png");
+
+	// Hacemos que las imágenes se dibujen desde su centro
+	for (auto & entry : galeriaIconos) {
+		entry.second.setAnchorPercent(0.5, 0.5);
+	}
 }
 
 //--------------------------------------------------------------
@@ -82,7 +90,7 @@ void ofApp::update(){
 					// Puntas de los índices se tocan Y puntas de los pulgares se tocan
 					if (getDist(h1[4], h2[4]) < 40 && getDist(h1[8], h2[8]) < 40) {
 						std::cout << "Gesto: CORAZÓN <3" << std::endl;
-						lanzarFigura("corazon");
+						lanzarFigura("corazon", centroManos);
 					}
 
 					// B. GAFAS (🤌 + 🤌 tocándose)
@@ -93,7 +101,7 @@ void ofApp::update(){
 					if (h1Closed && h2Closed && getDist(h1[8], h2[8]) < 50) {
 						std::cout << "Gesto: GAFAS 8-)" << std::endl;
 						ofPoint centro = (h1[8] + h2[8]) / 2;
-						lanzarFigura("gafas"); //para que esté en los ojos (ajustar)
+						lanzarFigura("gafas", centro); //para que esté en los ojos (ajustar)
 						gafasDetectadas = true;
 					}
 
@@ -101,7 +109,7 @@ void ofApp::update(){
 					// Índice de h1 estirado, Índice de h2 estirado. Resto cerrados.
 					if (isFingerExtended(h1, 8) && !isFingerExtended(h1, 12) && isFingerExtended(h2, 8) && !isFingerExtended(h2, 12)) {
 						std::cout << "Gesto: DIABLO >:)" << std::endl;
-						lanzarFigura("diablo");
+						lanzarFigura("diablo", centroManos);
 					}
 
 					// D. ARO / REZO (🙏)
@@ -114,10 +122,10 @@ void ofApp::update(){
 						// Si no es vertical (aprox -PI/2), es Zzz
 						if (abs(angulo - (-1.57)) > 0.5) {
 							std::cout << "Gesto: Zzzz (Dormir)" << std::endl;
-							lanzarFigura("dormir");
+							lanzarFigura("dormir", centroManos);
 						} else {
 							std::cout << "Gesto: REZO / ALAS" << std::endl;
-							lanzarFigura("alas");
+							lanzarFigura("alas", centroManos);
 						}
 					}
 
@@ -126,7 +134,7 @@ void ofApp::update(){
 					// (Simplificado: si 4 dedos de cada mano están estirados y manos cerca)
 					if (isFingerExtended(h1, 8) && isFingerExtended(h1, 12) && isFingerExtended(h1, 16) && isFingerExtended(h1, 20) && getDist(h1[0], h2[0]) < 150) { // 150 es "cerca pero no pegado"
 						std::cout << "Gesto: FUEGO HOT" << std::endl;
-						lanzarFigura("fuego");
+						lanzarFigura("fuego", centroManos);
 					}
 				}
 
@@ -157,7 +165,7 @@ void ofApp::update(){
 						else if (getDist(hand[4], hand[8]) < 30 && isFingerExtended(hand, 12)) {
 							// Nota: El isFingerExtended(12) es para diferenciarlo del puño o del "OK"
 							std::cout << "Gesto: ESTRELLA" << std::endl;
-							lanzarFigura("estrella");
+							lanzarFigura("estrella", puntaIndice);
 						}
 
 						// 🐟 PEZ vs 🐰 CONEJO
@@ -165,23 +173,23 @@ void ofApp::update(){
 
 							// Aquí viene la magia: ¿Está la mano tumbada o de pie?
 							if (isHandHorizontal(hand)) {
-								lanzarFigura("pez"); // Mano tumbada 🐟
+								lanzarFigura("pez", puntaIndice); // Mano tumbada 🐟
 							} else {
-								lanzarFigura("conejo"); // Mano vertical 🐰
+								lanzarFigura("conejo", puntaIndice); // Mano vertical 🐰
 							}
 						}
 
 						// D. ROCK / RAYOS 🤘 (Índice y Meñique arriba)
 						else if (isFingerExtended(hand, 8) && !isFingerExtended(hand, 12) && !isFingerExtended(hand, 16) && isFingerExtended(hand, 20)) {
 							std::cout << "Gesto: ROCK / RAYOS" << std::endl;
-							lanzarFigura("rock");
+							lanzarFigura("rock", hand[9]);
 							//añasir sonido de guitarra electrica
 						}
 
 						// E. GUSANO ☝🏼 (Meñique solo)
 						else if (!isFingerExtended(hand, 8) && !isFingerExtended(hand, 12) && isFingerExtended(hand, 20)) { // Solo meñique
 							std::cout << "Gesto: GUSANO" << std::endl;
-							lanzarFigura("gusano");
+							lanzarFigura("gusano", puntaIndice);
 						}
 
 						// F. PULGAR ARRIBA 👍
@@ -190,7 +198,7 @@ void ofApp::update(){
 							// Comprobación extra: que la punta del pulgar esté más arriba (menor Y) que su base
 							if (hand[4].y < hand[2].y) {
 								std::cout << "Gesto: LIKE" << std::endl;
-								lanzarFigura("pulgar");
+								lanzarFigura("pulgar", hand[9]);
 							}
 						}
 
@@ -200,7 +208,7 @@ void ofApp::update(){
 						if (isHandClosed) {
 							// Opcional: Si quieres que sea SOLO "de lado" (horizontal), descomenta esto:
 							// if (isHandHorizontal(hand)) {
-							lanzarFigura("burbuja");
+							lanzarFigura("burbuja", hand[9]);
 							// }
 						}
 					}
@@ -216,9 +224,6 @@ void ofApp::update(){
 		figurasActivas.end());
 
 
-	
-	
-	
 }
 
 //--------------------------------------------------------------
@@ -235,26 +240,22 @@ void ofApp::draw(){
 
 	// Pantalla Izquierda: Figuras generadas
 	
+	ofSetColor(255); // Resetear color a blanco para que los PNG no salgan teñidos
 	for (auto & f : figurasActivas) {
 		ofPushMatrix();
-
-		// Movernos a la posición de la figura
 		ofTranslate(f.pos.x, f.pos.y);
 
-		// Escalar 
-		float scale = f.sizeScale * 0.5;
+		// Escalar
+		float scale = f.sizeScale * 0.2; // 0.2 porque los PNG suelen ser muy grandes, ajusta si se ven enanos
 		ofScale(scale, scale);
 
-		// Centrar el SVG (porque se dibujan desde la esquina sup-izq)
-		float w = f.imagenRef->getWidth();
-		float h = f.imagenRef->getHeight();
-		ofTranslate(-w / 2, -h / 2);
-
-		// Dibujar
-		f.imagenRef->draw();
+		// Dibujar (ya está centrado por el setAnchorPercent)
+		f.imagenRef->draw(0, 0);
 
 		ofPopMatrix();
 	}
+	ofPopMatrix();
+	
 }
 
 //--------------------------------------------------------------
@@ -312,7 +313,7 @@ void ofApp::dragEvent(ofDragInfo dragInfo){
 
 }
 
-void ofApp::lanzarFigura(string nombreGesto) {
+void ofApp::lanzarFigura(string nombreGesto, ofPoint position) {
 	float now = ofGetElapsedTimef();
 
 	//Cooldown: només surt una figura cada 0.5 segons (de momet es pot tant treure com ajustar)
@@ -321,7 +322,10 @@ void ofApp::lanzarFigura(string nombreGesto) {
 		if (galeriaIconos.count(nombreGesto)) {
 			FiguraViva f;
 			f.imagenRef = &galeriaIconos[nombreGesto];
-		
+
+			// ASIGNAMOS LA POSICIÓN (con un pequeño random para que no se apilen exactas)
+			f.pos.x = position.x + ofRandom(-20, 20);
+			f.pos.y = position.y + ofRandom(-20, 20);
 
 			f.birthTime = now;
 			f.sizeScale = ofRandom(0.5, 1.5); //random size scale between 0.5 and 1.5
