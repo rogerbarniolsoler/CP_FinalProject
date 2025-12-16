@@ -3,6 +3,11 @@
 #include "ofMain.h"
 #include "ofxNetwork.h"
 
+struct TimedShape {
+	ofRectangle rect;
+	float birthTime;
+};
+
 class ofApp : public ofBaseApp{
 
 	public:
@@ -26,5 +31,5 @@ class ofApp : public ofBaseApp{
 		ofxTCPServer server;
 		vector<ofPoint> handPoints;
 
-		vector<ofRectangle> shapes;
+		vector<TimedShape> shapes;
 };

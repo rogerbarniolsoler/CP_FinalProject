@@ -1,11 +1,12 @@
-#include "ofApp.h"
+﻿#include "ofApp.h"
 
 
 //--------------------------------------------------------------
 void ofApp::setup(){
 	ofBackground(0);
-	server.setup(12345); //the same port as in Python
+	server.setup(1588); //the same port as in Python
 	server.setMessageDelimiter("\n");
+	std::cout << "Servidor OF escuchando en puerto 1588" << std::endl;
 }
 
 //--------------------------------------------------------------
@@ -14,28 +15,45 @@ void ofApp::update(){
 	// if there are any connected clients, try to receive messages from them
 	if (server.getNumClients() > 0) {
 		int lastID = server.getLastID();
-		for (int clientID = 0; clientID <= lastID; ++clientID) {
-			// skip invalid / empty client slots
+		for (int clientID = 0; clientID <= lastID; clientID++) {
 			if (server.getClientIP(clientID).empty()) continue;
-
 			std::string msg = server.receive(clientID);
 			if (!msg.empty()) {
-				vector<ofPoint> points;
-				stringstream ss(msg);
-				string token;
+				std::cout << " Mensaje recibido: " << msg << std::endl;
+				std::vector<ofPoint> points;
+				std::stringstream ss(msg);
+				std::string token;
 				while (std::getline(ss, token, ';')) {
-					stringstream coord(token);
+					std::stringstream coord(token);
 					float x, y;
 					char comma;
-					if (!(coord >> x >> comma >> y)) continue;
-					// scale to the window's setup
-					points.push_back(ofPoint(x * ofGetWidth(), y * ofGetHeight()));
+					if (coord >> x >> comma >> y) {
+						points.push_back(ofPoint(x * ofGetWidth(), y * ofGetHeight()));
+					}
 				}
 				handPoints = points;
 
+				// Ejemplo: si hay pinch (pulgar cerca del índice), crear figura
+				if (handPoints.size() >= 9) {
+					float dist = handPoints[4].distance(handPoints[8]);
+					if (dist < 30) {
+						TimedShape ts;
+						ts.rect = ofRectangle(ofRandom(0, ofGetWidth() / 2), ofRandom(0, ofGetHeight()), 50, 50);
+						ts.birthTime = ofGetElapsedTimef();
+						shapes.push_back(ts);
+						std::cout << "Figura creada" << std::endl;
+					}
+				}
 			}
 		}
 	}
+
+	// Eliminar figuras viejas
+	float now = ofGetElapsedTimef();
+	shapes.erase(remove_if(shapes.begin(), shapes.end(),
+					 [now](TimedShape & s) { return now - s.birthTime > 3.0; }),
+		shapes.end());
+	
 }
 
 //--------------------------------------------------------------
@@ -52,7 +70,7 @@ void ofApp::draw(){
 	// Left window: generated shapes
 	ofSetColor(255, 0, 0);
 	for (auto & s : shapes) {
-		ofDrawRectangle(s);
+		ofDrawRectangle(s.rect);
 	}
 }
 
