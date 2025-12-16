@@ -7,10 +7,14 @@ void ofApp::setup(){
 	server.setup(1588); //the same port as in Python
 	server.setMessageDelimiter("\n");
 	std::cout << "Servidor OF escuchando en puerto 1588" << std::endl;
+
+
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
+
+
 
 	// if there are any connected clients, try to receive messages from them
 	if (server.getNumClients() > 0) {

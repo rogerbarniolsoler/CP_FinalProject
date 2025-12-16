@@ -32,4 +32,5 @@ class ofApp : public ofBaseApp{
 		vector<ofPoint> handPoints;
 
 		vector<TimedShape> shapes;
+		ofVideoGrabber cam; //PC camera
 };
