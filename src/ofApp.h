@@ -71,7 +71,7 @@ class ofApp : public ofBaseApp{
 		void dragEvent(ofDragInfo dragInfo);
 		void gotMessage(ofMessage msg);
 
-		void lanzarFigura(string nombreGesto, ofPoint posicion);
+		void lanzarFigura(string nombreGesto);
 
 		ofxTCPServer server;
 		vector<ofPoint> handPoints;
