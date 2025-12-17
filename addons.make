@@ -1,2 +1,3 @@
+ofxGui
 ofxNetwork
-ofxSvg
+ofxOsc

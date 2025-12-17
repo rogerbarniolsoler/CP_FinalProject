@@ -2,7 +2,7 @@
 
 #include "ofMain.h"
 #include "ofxNetwork.h"
-#include "ofxSvg.h"
+#include "ofxOsc.h"
 
 struct TimedShape {
 	ofRectangle rect;
@@ -17,36 +17,38 @@ struct TimedShape {
 // 16: Anular (Punta)
 // 20: Meñique (Punta)
 
+//// Verifica si el pulgar está "abierto" (lejos del índice)
+//bool isThumbOpen(const vector<ofPoint> & hand) {
+//	return getDist(hand[4], hand[8]) > 50; // Ajustar umbral según resolución
+//}
+
 // Calcula distancia entre dos puntos
 float getDist(ofPoint p1, ofPoint p2) {
 	return p1.distance(p2);
 }
 
-// Verifica si un dedo está estirado (comparando la punta con el nudillo inferior)
-// Esto asume que la mano apunta hacia arriba. 
+// Calcula una referencia de tamaño de la mano (distancia Muñeca -> Nudillo Medio)
+// Esto nos ayuda a saber si la mano está cerca o lejos
+float getHandScale(const vector<ofPoint> & hand) {
+	float scale = hand[0].distance(hand[9]);
+	return (scale > 0) ? scale : 1.0;
+}
+
+// Verifica si un dedo está estirado
 bool isFingerExtended(const vector<ofPoint> & hand, int fingerTipIdx) {
-	// El nudillo base del dedo es tipIdx - 2 (ej: Indice punta 8, nudillo 6)
-	// Si la distancia de la punta a la muñeca (0) es mayor que la del nudillo a la muñeca, está estirado.
 	return getDist(hand[fingerTipIdx], hand[0]) > getDist(hand[fingerTipIdx - 2], hand[0]);
 }
 
-// Devuelve TRUE si la mano está en horizontal
-// Compara la posición de la muñeca (0) con la base del dedo índice (5)
+// Devuelve TRUE si la mano está en horizontal (tipo pez)
 bool isHandHorizontal(const vector<ofPoint> & hand) {
 	float diffX = abs(hand[5].x - hand[0].x);
 	float diffY = abs(hand[5].y - hand[0].y);
-	// Si la diferencia en X es mayor que en Y, la mano está tumbada
 	return diffX > diffY;
-}
-
-// Verifica si el pulgar está "abierto" (lejos del índice)
-bool isThumbOpen(const vector<ofPoint> & hand) {
-	return getDist(hand[4], hand[8]) > 50; // Ajustar umbral según resolución
 }
 
 //struct for the shapes that appears on the screen
 struct FiguraViva {
-	//ofxSVG * imagenRef; // Puntero al molde original (para no cargar el archivo 100 veces)
+	// Puntero al molde original (para no cargar el archivo 100 veces)
 	ofImage * imagenRef; 
 	ofPoint pos;
 	float birthTime;
@@ -77,12 +79,12 @@ class ofApp : public ofBaseApp{
 		ofxTCPServer server;
 		vector<ofPoint> handPoints;
 
-		vector<TimedShape> shapes;
-		ofVideoGrabber cam; //PC camera
-
 		map<string, ofImage> galeriaIconos; //si buscamos "corazón" nos da el svg del cora
 		vector<FiguraViva> figurasActivas; //lista de figuras qeu se estan dibujando en elmomento
 
 		//control del tiempo para no dibujar 50 formas por seg
 		float lastSpawnTime = 0;
+
+		ofxOscReceiver receiver;
+		ofVideoGrabber cam;
 };

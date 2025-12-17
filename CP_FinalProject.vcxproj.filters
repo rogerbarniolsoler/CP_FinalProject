@@ -7,6 +7,36 @@
 		<ClCompile Include="src\main.cpp">
 			<Filter>src</Filter>
 		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxBaseGui.cpp">
+			<Filter>addons\ofxGui\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxButton.cpp">
+			<Filter>addons\ofxGui\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxColorPicker.cpp">
+			<Filter>addons\ofxGui\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxGuiGroup.cpp">
+			<Filter>addons\ofxGui\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxInputField.cpp">
+			<Filter>addons\ofxGui\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxLabel.cpp">
+			<Filter>addons\ofxGui\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxPanel.cpp">
+			<Filter>addons\ofxGui\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxSlider.cpp">
+			<Filter>addons\ofxGui\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxSliderGroup.cpp">
+			<Filter>addons\ofxGui\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxGui\src\ofxToggle.cpp">
+			<Filter>addons\ofxGui\src</Filter>
+		</ClCompile>
 		<ClCompile Include="..\..\..\addons\ofxNetwork\src\ofxNetworkUtils.cpp">
 			<Filter>addons\ofxNetwork\src</Filter>
 		</ClCompile>
@@ -22,8 +52,41 @@
 		<ClCompile Include="..\..\..\addons\ofxNetwork\src\ofxUDPManager.cpp">
 			<Filter>addons\ofxNetwork\src</Filter>
 		</ClCompile>
-		<ClCompile Include="..\..\..\addons\ofxSvg\src\ofxSvg.cpp">
-			<Filter>addons\ofxSvg\src</Filter>
+		<ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscBundle.cpp">
+			<Filter>addons\ofxOsc\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscMessage.cpp">
+			<Filter>addons\ofxOsc\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscParameterSync.cpp">
+			<Filter>addons\ofxOsc\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscReceiver.cpp">
+			<Filter>addons\ofxOsc\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxOsc\src\ofxOscSender.cpp">
+			<Filter>addons\ofxOsc\src</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\IpEndpointName.cpp">
+			<Filter>addons\ofxOsc\libs\oscpack\src\ip</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\win32\NetworkingUtils.cpp">
+			<Filter>addons\ofxOsc\libs\oscpack\src\ip\win32</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\win32\UdpSocket.cpp">
+			<Filter>addons\ofxOsc\libs\oscpack\src\ip\win32</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscOutboundPacketStream.cpp">
+			<Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscPrintReceivedElements.cpp">
+			<Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscReceivedElements.cpp">
+			<Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
+		</ClCompile>
+		<ClCompile Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscTypes.cpp">
+			<Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
 		</ClCompile>
 	</ItemGroup>
 	<ItemGroup>
@@ -31,42 +94,87 @@
 			<UniqueIdentifier>{d8376475-7454-4a24-b08a-aac121d3ad6f}</UniqueIdentifier>
 		</Filter>
 		<Filter Include="addons">
-			<UniqueIdentifier>{BA82B13D--558-1-4E-63-8-D9D-86867500DF75}</UniqueIdentifier>
+			<UniqueIdentifier>{05053C98--47A-4-4A-EF-A-0CF-E1F2E3006DD5}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxGui">
+			<UniqueIdentifier>{15591B22--51C-4-47-A2-9-1F4-EBDE8310DFD6}</UniqueIdentifier>
+		</Filter>
+		<Filter Include="addons\ofxGui\src">
+			<UniqueIdentifier>{6568706A--9DD-D-46-33-B-D6A-E5F6CFFC106C}</UniqueIdentifier>
 		</Filter>
 		<Filter Include="addons\ofxNetwork">
-			<UniqueIdentifier>{5790BF74--350-6-4F-07-8-E47-3520F392E97E}</UniqueIdentifier>
+			<UniqueIdentifier>{ECA419DF--481-A-47-7F-A-601-AA0522CF91CB}</UniqueIdentifier>
 		</Filter>
 		<Filter Include="addons\ofxNetwork\src">
-			<UniqueIdentifier>{38011F72--DD9-F-4C-C3-8-832-A9631B23F6C2}</UniqueIdentifier>
+			<UniqueIdentifier>{CAC72678--084-6-47-CE-8-9EF-55B5FF226FBE}</UniqueIdentifier>
 		</Filter>
-		<Filter Include="addons\ofxSvg">
-			<UniqueIdentifier>{BBBAA6DC--A86-4-49-F1-8-DB1-E4228CF0DE28}</UniqueIdentifier>
+		<Filter Include="addons\ofxOsc">
+			<UniqueIdentifier>{79D3BCE2--8B8-F-4A-AA-9-F3D-280B969F6C14}</UniqueIdentifier>
 		</Filter>
-		<Filter Include="addons\ofxSvg\src">
-			<UniqueIdentifier>{ED3D476E--99D-8-46-1D-8-D02-B648AA341E4A}</UniqueIdentifier>
+		<Filter Include="addons\ofxOsc\src">
+			<UniqueIdentifier>{7EBFCFF8--6DF-9-46-BF-B-45A-AA0886856128}</UniqueIdentifier>
 		</Filter>
-		<Filter Include="addons\ofxSvg\libs">
-			<UniqueIdentifier>{20DD4895--77D-9-48-22-9-844-DC1B1A7B3331}</UniqueIdentifier>
+		<Filter Include="addons\ofxOsc\libs">
+			<UniqueIdentifier>{1743F8CD--F13-4-4A-5E-A-262-C0E632C24A4D}</UniqueIdentifier>
 		</Filter>
-		<Filter Include="addons\ofxSvg\libs\libxml2">
-			<UniqueIdentifier>{29E08CEE--635-9-4B-03-B-9DD-FF3AE48A1BD9}</UniqueIdentifier>
+		<Filter Include="addons\ofxOsc\libs\oscpack">
+			<UniqueIdentifier>{E1AD92CD--691-D-45-5E-9-87D-9F309966F15F}</UniqueIdentifier>
 		</Filter>
-		<Filter Include="addons\ofxSvg\libs\libxml2\include">
-			<UniqueIdentifier>{42B21156--4B5-8-46-2B-A-7E6-FAFD0AF42510}</UniqueIdentifier>
+		<Filter Include="addons\ofxOsc\libs\oscpack\src">
+			<UniqueIdentifier>{EEFBFAE5--24C-B-47-5C-8-83B-151F62B66A1E}</UniqueIdentifier>
 		</Filter>
-		<Filter Include="addons\ofxSvg\libs\libxml2\include\libxml">
-			<UniqueIdentifier>{B1D57F60--689-E-4F-F6-9-6BD-E18F0003B484}</UniqueIdentifier>
+		<Filter Include="addons\ofxOsc\libs\oscpack\src\ip">
+			<UniqueIdentifier>{045790E7--0A4-A-4D-7B-A-06F-C9823373F461}</UniqueIdentifier>
 		</Filter>
-		<Filter Include="addons\ofxSvg\libs\svgtiny">
-			<UniqueIdentifier>{6E312DAE--C02-B-43-0A-8-1BC-B1C222FCDC82}</UniqueIdentifier>
+		<Filter Include="addons\ofxOsc\libs\oscpack\src\ip\win32">
+			<UniqueIdentifier>{DDABB86C--8B9-3-45-43-B-F50-30096D1FFFC4}</UniqueIdentifier>
 		</Filter>
-		<Filter Include="addons\ofxSvg\libs\svgtiny\include">
-			<UniqueIdentifier>{8657BDF9--642-F-4D-AB-B-A36-BD227A1351C9}</UniqueIdentifier>
+		<Filter Include="addons\ofxOsc\libs\oscpack\src\osc">
+			<UniqueIdentifier>{F934D59F--95D-1-47-61-B-1B3-6EC60B11ED54}</UniqueIdentifier>
 		</Filter>
 	</ItemGroup>
 	<ItemGroup>
 		<ClInclude Include="src\ofApp.h">
 			<Filter>src</Filter>
+		</ClInclude>
+		<ClInclude Include="src\Animations.h">
+			<Filter>src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxBaseGui.h">
+			<Filter>addons\ofxGui\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxButton.h">
+			<Filter>addons\ofxGui\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxColorPicker.h">
+			<Filter>addons\ofxGui\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxGui.h">
+			<Filter>addons\ofxGui\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxGuiGroup.h">
+			<Filter>addons\ofxGui\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxGuiUtils.h">
+			<Filter>addons\ofxGui\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxInputField.h">
+			<Filter>addons\ofxGui\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxLabel.h">
+			<Filter>addons\ofxGui\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxPanel.h">
+			<Filter>addons\ofxGui\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxSlider.h">
+			<Filter>addons\ofxGui\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxSliderGroup.h">
+			<Filter>addons\ofxGui\src</Filter>
+		</ClInclude>
+		<ClInclude Include="..\..\..\addons\ofxGui\src\ofxToggle.h">
+			<Filter>addons\ofxGui\src</Filter>
 		</ClInclude>
 		<ClInclude Include="..\..\..\addons\ofxNetwork\src\ofxNetwork.h">
 			<Filter>addons\ofxNetwork\src</Filter>
@@ -92,155 +200,65 @@
 		<ClInclude Include="..\..\..\addons\ofxNetwork\src\ofxUDPSettings.h">
 			<Filter>addons\ofxNetwork\src</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\src\ofxSvg.h">
-			<Filter>addons\ofxSvg\src</Filter>
+		<ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOsc.h">
+			<Filter>addons\ofxOsc\src</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\libxml2\include\libxml\c14n.h">
-			<Filter>addons\ofxSvg\libs\libxml2\include\libxml</Filter>
+		<ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscArg.h">
+			<Filter>addons\ofxOsc\src</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\libxml2\include\libxml\catalog.h">
-			<Filter>addons\ofxSvg\libs\libxml2\include\libxml</Filter>
+		<ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscBundle.h">
+			<Filter>addons\ofxOsc\src</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\libxml2\include\libxml\chvalid.h">
-			<Filter>addons\ofxSvg\libs\libxml2\include\libxml</Filter>
+		<ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscMessage.h">
+			<Filter>addons\ofxOsc\src</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\libxml2\include\libxml\debugXML.h">
-			<Filter>addons\ofxSvg\libs\libxml2\include\libxml</Filter>
+		<ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscParameterSync.h">
+			<Filter>addons\ofxOsc\src</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\libxml2\include\libxml\dict.h">
-			<Filter>addons\ofxSvg\libs\libxml2\include\libxml</Filter>
+		<ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscReceiver.h">
+			<Filter>addons\ofxOsc\src</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\libxml2\include\libxml\encoding.h">
-			<Filter>addons\ofxSvg\libs\libxml2\include\libxml</Filter>
+		<ClInclude Include="..\..\..\addons\ofxOsc\src\ofxOscSender.h">
+			<Filter>addons\ofxOsc\src</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\libxml2\include\libxml\entities.h">
-			<Filter>addons\ofxSvg\libs\libxml2\include\libxml</Filter>
+		<ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\IpEndpointName.h">
+			<Filter>addons\ofxOsc\libs\oscpack\src\ip</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\libxml2\include\libxml\globals.h">
-			<Filter>addons\ofxSvg\libs\libxml2\include\libxml</Filter>
+		<ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\NetworkingUtils.h">
+			<Filter>addons\ofxOsc\libs\oscpack\src\ip</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\libxml2\include\libxml\hash.h">
-			<Filter>addons\ofxSvg\libs\libxml2\include\libxml</Filter>
+		<ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\PacketListener.h">
+			<Filter>addons\ofxOsc\libs\oscpack\src\ip</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\libxml2\include\libxml\HTMLparser.h">
-			<Filter>addons\ofxSvg\libs\libxml2\include\libxml</Filter>
+		<ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\TimerListener.h">
+			<Filter>addons\ofxOsc\libs\oscpack\src\ip</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\libxml2\include\libxml\HTMLtree.h">
-			<Filter>addons\ofxSvg\libs\libxml2\include\libxml</Filter>
+		<ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\ip\UdpSocket.h">
+			<Filter>addons\ofxOsc\libs\oscpack\src\ip</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\libxml2\include\libxml\list.h">
-			<Filter>addons\ofxSvg\libs\libxml2\include\libxml</Filter>
+		<ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\MessageMappingOscPacketListener.h">
+			<Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\libxml2\include\libxml\nanoftp.h">
-			<Filter>addons\ofxSvg\libs\libxml2\include\libxml</Filter>
+		<ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscException.h">
+			<Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\libxml2\include\libxml\nanohttp.h">
-			<Filter>addons\ofxSvg\libs\libxml2\include\libxml</Filter>
+		<ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscHostEndianness.h">
+			<Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\libxml2\include\libxml\parser.h">
-			<Filter>addons\ofxSvg\libs\libxml2\include\libxml</Filter>
+		<ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscOutboundPacketStream.h">
+			<Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\libxml2\include\libxml\parserInternals.h">
-			<Filter>addons\ofxSvg\libs\libxml2\include\libxml</Filter>
+		<ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscPacketListener.h">
+			<Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\libxml2\include\libxml\pattern.h">
-			<Filter>addons\ofxSvg\libs\libxml2\include\libxml</Filter>
+		<ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscPrintReceivedElements.h">
+			<Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\libxml2\include\libxml\relaxng.h">
-			<Filter>addons\ofxSvg\libs\libxml2\include\libxml</Filter>
+		<ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscReceivedElements.h">
+			<Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
 		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\libxml2\include\libxml\SAX.h">
-			<Filter>addons\ofxSvg\libs\libxml2\include\libxml</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\libxml2\include\libxml\SAX2.h">
-			<Filter>addons\ofxSvg\libs\libxml2\include\libxml</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\libxml2\include\libxml\schemasInternals.h">
-			<Filter>addons\ofxSvg\libs\libxml2\include\libxml</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\libxml2\include\libxml\schematron.h">
-			<Filter>addons\ofxSvg\libs\libxml2\include\libxml</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\libxml2\include\libxml\threads.h">
-			<Filter>addons\ofxSvg\libs\libxml2\include\libxml</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\libxml2\include\libxml\tree.h">
-			<Filter>addons\ofxSvg\libs\libxml2\include\libxml</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\libxml2\include\libxml\uri.h">
-			<Filter>addons\ofxSvg\libs\libxml2\include\libxml</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\libxml2\include\libxml\valid.h">
-			<Filter>addons\ofxSvg\libs\libxml2\include\libxml</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\libxml2\include\libxml\xinclude.h">
-			<Filter>addons\ofxSvg\libs\libxml2\include\libxml</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\libxml2\include\libxml\xlink.h">
-			<Filter>addons\ofxSvg\libs\libxml2\include\libxml</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\libxml2\include\libxml\xmlautomata.h">
-			<Filter>addons\ofxSvg\libs\libxml2\include\libxml</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\libxml2\include\libxml\xmlerror.h">
-			<Filter>addons\ofxSvg\libs\libxml2\include\libxml</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\libxml2\include\libxml\xmlexports.h">
-			<Filter>addons\ofxSvg\libs\libxml2\include\libxml</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\libxml2\include\libxml\xmlIO.h">
-			<Filter>addons\ofxSvg\libs\libxml2\include\libxml</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\libxml2\include\libxml\xmlmemory.h">
-			<Filter>addons\ofxSvg\libs\libxml2\include\libxml</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\libxml2\include\libxml\xmlmodule.h">
-			<Filter>addons\ofxSvg\libs\libxml2\include\libxml</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\libxml2\include\libxml\xmlreader.h">
-			<Filter>addons\ofxSvg\libs\libxml2\include\libxml</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\libxml2\include\libxml\xmlregexp.h">
-			<Filter>addons\ofxSvg\libs\libxml2\include\libxml</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\libxml2\include\libxml\xmlsave.h">
-			<Filter>addons\ofxSvg\libs\libxml2\include\libxml</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\libxml2\include\libxml\xmlschemas.h">
-			<Filter>addons\ofxSvg\libs\libxml2\include\libxml</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\libxml2\include\libxml\xmlschemastypes.h">
-			<Filter>addons\ofxSvg\libs\libxml2\include\libxml</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\libxml2\include\libxml\xmlstring.h">
-			<Filter>addons\ofxSvg\libs\libxml2\include\libxml</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\libxml2\include\libxml\xmlunicode.h">
-			<Filter>addons\ofxSvg\libs\libxml2\include\libxml</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\libxml2\include\libxml\xmlversion.h">
-			<Filter>addons\ofxSvg\libs\libxml2\include\libxml</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\libxml2\include\libxml\xmlwriter.h">
-			<Filter>addons\ofxSvg\libs\libxml2\include\libxml</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\libxml2\include\libxml\xpath.h">
-			<Filter>addons\ofxSvg\libs\libxml2\include\libxml</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\libxml2\include\libxml\xpathInternals.h">
-			<Filter>addons\ofxSvg\libs\libxml2\include\libxml</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\libxml2\include\libxml\xpointer.h">
-			<Filter>addons\ofxSvg\libs\libxml2\include\libxml</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\svgtiny\include\svgtiny.h">
-			<Filter>addons\ofxSvg\libs\svgtiny\include</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\svgtiny\include\xmlerror.h">
-			<Filter>addons\ofxSvg\libs\svgtiny\include</Filter>
-		</ClInclude>
-		<ClInclude Include="..\..\..\addons\ofxSvg\libs\svgtiny\include\xmlparser.h">
-			<Filter>addons\ofxSvg\libs\svgtiny\include</Filter>
+		<ClInclude Include="..\..\..\addons\ofxOsc\libs\oscpack\src\osc\OscTypes.h">
+			<Filter>addons\ofxOsc\libs\oscpack\src\osc</Filter>
 		</ClInclude>
 	</ItemGroup>
 	<ItemGroup>

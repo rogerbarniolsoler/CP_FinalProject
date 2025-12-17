@@ -11,6 +11,14 @@ void ofApp::setup(){
 	server.setMessageDelimiter("\n");
 	std::cout << "Servidor OF escuchando en puerto 1588" << std::endl;
 
+	bool intentarUsarCamara = true;
+
+	if (intentarUsarCamara) {
+		cam.setVerbose(true);
+		// Intenta abrir la cámara. Si Python la tiene ocupada, esto fallará pero no romperá todo.
+		cam.setup(1280, 720);
+	}
+
 	//update the SVGs
 	galeriaIconos["corazon"].load("Heart.png");
 	galeriaIconos["conejo"].load("Bunny.png");
@@ -28,21 +36,28 @@ void ofApp::setup(){
 
 	// Hacemos que las imágenes se dibujen desde su centro
 	for (auto & entry : galeriaIconos) {
-		entry.second.setAnchorPercent(0.5, 0.5);
+		if (entry.second.isAllocated())
+		{
+			entry.second.setAnchorPercent(0.5, 0.5);
+		}
 	}
 }
 
 //--------------------------------------------------------------
 void ofApp::update(){
 
+	if (cam.isInitialized()) {
+		cam.update();
+	}
+
 	// if there are any connected clients, try to receive messages from them
 	if (server.getNumClients() > 0) {
 		int lastID = server.getLastID();
 		for (int clientID = 0; clientID <= lastID; clientID++) {
 			if (server.getClientIP(clientID).empty()) continue;
+
 			string msg = server.receive(clientID);
 			if (!msg.empty()) {
-				cout << " Mensaje recibido: " << msg << std::endl;
 				vector<ofPoint> points;
 				stringstream ss(msg);
 				string token;
@@ -51,211 +66,196 @@ void ofApp::update(){
 					float x, y;
 					char comma;
 					if (coord >> x >> comma >> y) {
-						// Mapeamos X: si viene 0 será el centro de pantalla, si viene 1 será el borde derecho
-						float mappedX = ofMap(x, 0, 1, ofGetWidth() / 2, ofGetWidth());
-						float mappedY = y * ofGetHeight();
-
-						// Invertimos X sise hace efecto espejo
-						// float mappedX = ofMap(x, 0, 1, ofGetWidth(), ofGetWidth()/2);
-
-						points.push_back(ofPoint(mappedX, mappedY));
+						// Mapeamos a pantalla completa
+						points.push_back(ofPoint(x * ofGetWidth(), y * ofGetHeight()));
 					}
 				}
 				handPoints = points;
-
-				// --- 1. GESTO SUPREMO: INSULTO 🖕 (Cerrar App) ---
-				// Lo comprobamos primero por seguridad
-				if (handPoints.size() >= 21) {
-					// Si el dedo corazón (12) está estirado Y el índice (8) y anular (16) encogidos
-					if (isFingerExtended(handPoints, 12) && !isFingerExtended(handPoints, 8) && !isFingerExtended(handPoints, 16)) {
-
-						std::cout << "Tu madre! Adiós." << std::endl;
-						std::exit(0); // Cierra la aplicación
-					}
-				}
-				bool gafasDetectadas = false;
-
-				// --- 2. GESTOS DE DOS MANOS (Requiere 42 puntos) ---
-				if (handPoints.size() >= 42) {
-					// Separamos las manos para que sea más legible
-					vector<ofPoint> h1(handPoints.begin(), handPoints.begin() + 21);
-					vector<ofPoint> h2(handPoints.begin() + 21, handPoints.end());
-
-					//-------------BORRAR ESTO PARA HACER ALEATORIEDAD DE POSICIÓN -------------//
-					// Calculamos el centro entre las dos manos para poner ahí la figura
-					ofPoint centroManos = (h1[0] + h2[0]) / 2;
-					//-------------BORRAR ESTO PARA HACER ALEATORIEDAD DE POSICIÓN -------------//
-
-					// A. CORAZÓN
-					// Puntas de los índices se tocan Y puntas de los pulgares se tocan
-					if (getDist(h1[4], h2[4]) < 40 && getDist(h1[8], h2[8]) < 40) {
-						std::cout << "Gesto: CORAZÓN <3" << std::endl;
-						lanzarFigura("corazon", centroManos);
-					}
-
-					// B. GAFAS (🤌 + 🤌 tocándose)
-					// Puntas de h1 juntas (Pinch total) Y Puntas de h2 juntas
-					// Y h1 toca h2
-					bool h1Closed = getDist(h1[4], h1[8]) < 30 && getDist(h1[4], h1[12]) < 30;
-					bool h2Closed = getDist(h2[4], h2[8]) < 30 && getDist(h2[4], h2[12]) < 30;
-					if (h1Closed && h2Closed && getDist(h1[8], h2[8]) < 50) {
-						std::cout << "Gesto: GAFAS 8-)" << std::endl;
-						ofPoint centro = (h1[8] + h2[8]) / 2;
-						lanzarFigura("gafas", centro); //para que esté en los ojos (ajustar)
-						gafasDetectadas = true;
-					}
-
-					// C. DIABLO (☝🏼 ☝🏼)
-					// Índice de h1 estirado, Índice de h2 estirado. Resto cerrados.
-					if (isFingerExtended(h1, 8) && !isFingerExtended(h1, 12) && isFingerExtended(h2, 8) && !isFingerExtended(h2, 12)) {
-						std::cout << "Gesto: DIABLO >:)" << std::endl;
-						lanzarFigura("diablo", centroManos);
-					}
-
-					// D. ARO / REZO (🙏)
-					// Muñecas juntas y puntas de dedos medios juntas
-					if (getDist(h1[0], h2[0]) < 60 && getDist(h1[12], h2[12]) < 60) {
-
-						// Chequeo extra para "Zzz" (Inclinado)
-						// Calculamos ángulo entre muñeca y dedo medio
-						float angulo = atan2(h1[12].y - h1[0].y, h1[12].x - h1[0].x);
-						// Si no es vertical (aprox -PI/2), es Zzz
-						if (abs(angulo - (-1.57)) > 0.5) {
-							std::cout << "Gesto: Zzzz (Dormir)" << std::endl;
-							lanzarFigura("dormir", centroManos);
-						} else {
-							std::cout << "Gesto: REZO / ALAS" << std::endl;
-							lanzarFigura("alas", centroManos);
-						}
-					}
-
-					// E. FUEGO (👐 Uff hot)
-					// Todos los dedos estirados y manos cerca
-					// (Simplificado: si 4 dedos de cada mano están estirados y manos cerca)
-					if (isFingerExtended(h1, 8) && isFingerExtended(h1, 12) && isFingerExtended(h1, 16) && isFingerExtended(h1, 20) && getDist(h1[0], h2[0]) < 150) { // 150 es "cerca pero no pegado"
-						std::cout << "Gesto: FUEGO HOT" << std::endl;
-						lanzarFigura("fuego", centroManos);
-					}
-				}
-
-				// ---  GESTOS DE UNA MANO (Usamos la primera mano detectada) ---
-				// Iteramos por las manos detectadas (sea 1 o 2)
-				if (!gafasDetectadas) {
-					int numManos = handPoints.size() / 21;
-
-					for (int i = 0; i < numManos; i++) {
-						// Extraer sub-vector de puntos para esta mano
-						auto start = handPoints.begin() + (i * 21);
-						vector<ofPoint> hand(start, start + 21);
-
-						//-------------BORRAR ESTO PARA HACER ALEATORIEDAD DE POSICIÓN -------------//
-						// Usamos el índice como referencia
-						ofPoint puntaIndice = hand[8];
-						//-------------BORRAR ESTO PARA HACER ALEATORIEDAD DE POSICIÓN -------------//
-
-						// A. PUÑO 👊 (Rompe pantalla)
-						// Ningún dedo estirado (excepto quizas pulgar que puede estar sobre los dedos)
-						if (!isFingerExtended(hand, 8) && !isFingerExtended(hand, 12) && !isFingerExtended(hand, 16) && !isFingerExtended(hand, 20)) {
-							std::cout << "Gesto: PUÑO (Romper)" << std::endl;
-							figurasActivas.clear(); // Borrar todo violento
-							// Activar sonido de romper pantalla
-						}
-
-						// B. ESTRELLA 🤏 (Pinch clásico)
-						else if (getDist(hand[4], hand[8]) < 30 && isFingerExtended(hand, 12)) {
-							// Nota: El isFingerExtended(12) es para diferenciarlo del puño o del "OK"
-							std::cout << "Gesto: ESTRELLA" << std::endl;
-							lanzarFigura("estrella", puntaIndice);
-						}
-
-						// 🐟 PEZ vs 🐰 CONEJO
-						else if (isFingerExtended(hand, 8) && isFingerExtended(hand, 12) && !isFingerExtended(hand, 16) && !isFingerExtended(hand, 20)) {
-
-							// Aquí viene la magia: ¿Está la mano tumbada o de pie?
-							if (isHandHorizontal(hand)) {
-								lanzarFigura("pez", puntaIndice); // Mano tumbada 🐟
-							} else {
-								lanzarFigura("conejo", puntaIndice); // Mano vertical 🐰
-							}
-						}
-
-						// D. ROCK / RAYOS 🤘 (Índice y Meñique arriba)
-						else if (isFingerExtended(hand, 8) && !isFingerExtended(hand, 12) && !isFingerExtended(hand, 16) && isFingerExtended(hand, 20)) {
-							std::cout << "Gesto: ROCK / RAYOS" << std::endl;
-							lanzarFigura("rock", hand[9]);
-							//añasir sonido de guitarra electrica
-						}
-
-						// E. GUSANO ☝🏼 (Meñique solo)
-						else if (!isFingerExtended(hand, 8) && !isFingerExtended(hand, 12) && isFingerExtended(hand, 20)) { // Solo meñique
-							std::cout << "Gesto: GUSANO" << std::endl;
-							lanzarFigura("gusano", puntaIndice);
-						}
-
-						// F. PULGAR ARRIBA 👍
-						// Pulgar lejos del índice y resto de dedos cerrados
-						else if (isThumbOpen(hand) && !isFingerExtended(hand, 8) && !isFingerExtended(hand, 12) && !isFingerExtended(hand, 20)) {
-							// Comprobación extra: que la punta del pulgar esté más arriba (menor Y) que su base
-							if (hand[4].y < hand[2].y) {
-								std::cout << "Gesto: LIKE" << std::endl;
-								lanzarFigura("pulgar", hand[9]);
-							}
-						}
-
-						// G. BURBUJITA
-						bool isHandClosed = getDist(hand[4], hand[8]) < 30 && getDist(hand[4], hand[12]) < 30;
-
-						if (isHandClosed) {
-							// Opcional: Si quieres que sea SOLO "de lado" (horizontal), descomenta esto:
-							// if (isHandHorizontal(hand)) {
-							lanzarFigura("burbuja", hand[9]);
-							// }
-						}
-					}
-				}
 			}
 		}
 	}
 
-	// Eliminar figuras viejas
+	// LIMPIEZA DE FIGURAS VIEJAS (Viven 3 segundos)
 	float now = ofGetElapsedTimef();
-	figurasActivas.erase(remove_if(figurasActivas.begin(), figurasActivas.end(),
-							 [now](FiguraViva & f) { return now - f.birthTime > 3.0; }),
-		figurasActivas.end());
+	for (int i = figurasActivas.size() - 1; i >= 0; i--) {
+		if (now - figurasActivas[i].birthTime > 3.0) {
+			figurasActivas.erase(figurasActivas.begin() + i);
+		}
+	}
 
+	// =========================================================
+	// LÓGICA DE GESTOS MEJORADA (Con Escala y Prioridad)
+	// =========================================================
 
+	bool gafasDetectadas = false; // Bandera de prioridad
+
+	// --- 1. DOS MANOS DETECTADAS ---
+	if (handPoints.size() >= 42) {
+		// Separar puntos
+		vector<ofPoint> rawH1(handPoints.begin(), handPoints.begin() + 21);
+		vector<ofPoint> rawH2(handPoints.begin() + 21, handPoints.end());
+
+		// Ordenar visualmente (h1 Izquierda, h2 Derecha)
+		vector<ofPoint> h1, h2;
+		if (rawH1[0].x < rawH2[0].x) {
+			h1 = rawH1;
+			h2 = rawH2;
+		} else {
+			h1 = rawH2;
+			h2 = rawH1;
+		}
+
+		// Calcular ESCALA (tamaño de la mano en pantalla)
+		float s = (getHandScale(h1) + getHandScale(h2)) / 2.0;
+
+		// GESTO: GAFAS 👓 (Pinch cerrado en ambas manos + tocándose)
+		bool h1Closed = getDist(h1[4], h1[8]) < (s * 0.5) && getDist(h1[4], h1[12]) < (s * 0.5);
+		bool h2Closed = getDist(h2[4], h2[8]) < (s * 0.5) && getDist(h2[4], h2[12]) < (s * 0.5);
+
+		if (h1Closed && h2Closed && getDist(h1[8], h2[8]) < (s * 1.5)) {
+			ofPoint centro = (h1[8] + h2[8]) / 2;
+			lanzarFigura("gafas", centro);
+			gafasDetectadas = true; // Bloquear burbujas
+		}
+
+		// GESTO: ALAS / REZO 🙏 (Muñecas juntas + Dedos arriba)
+		bool munecasJuntas = getDist(h1[0], h2[0]) < (s * 2.5);
+		bool dedosArriba = h1[12].y < h1[0].y && h2[12].y < h2[0].y; // Dedos más arriba que muñeca
+
+		if (munecasJuntas && dedosArriba && !gafasDetectadas) {
+			// Si hay mucha diferencia de altura entre muñecas -> Dormir
+			if (abs(h1[0].y - h2[0].y) > (s * 0.8)) {
+				lanzarFigura("dormir", (h1[12] + h2[12]) / 2);
+			} else {
+				lanzarFigura("alas", (h1[12] + h2[12]) / 2);
+			}
+		}
+
+		// GESTO: DIABLO 😈 (Indices arriba, resto abajo)
+		bool h1IndexOnly = isFingerExtended(h1, 8) && !isFingerExtended(h1, 12) && !isFingerExtended(h1, 20);
+		bool h2IndexOnly = isFingerExtended(h2, 8) && !isFingerExtended(h2, 12) && !isFingerExtended(h2, 20);
+
+		if (h1IndexOnly && h2IndexOnly) {
+			lanzarFigura("diablo", (h1[8] + h2[8]) / 2);
+		}
+
+		// GESTO: CORAZÓN 🫶 (Dedos gordos e índices tocándose)
+		if (getDist(h1[4], h2[4]) < s && getDist(h1[8], h2[8]) < s && !gafasDetectadas) {
+			lanzarFigura("corazon", (h1[8] + h2[8]) / 2);
+		}
+
+		// GESTO: FUEGO 🔥 (Manos abiertas cerca)
+		// ... puedes añadirlo aquí ...
+	}
+
+	// --- 2. UNA MANO (Si no hay gafas) ---
+	if (!gafasDetectadas) {
+		int numManos = handPoints.size() / 21;
+
+		for (int i = 0; i < numManos; i++) {
+			auto start = handPoints.begin() + (i * 21);
+			vector<ofPoint> hand(start, start + 21);
+
+			float s = getHandScale(hand); // Escala individual
+			ofPoint puntaIndice = hand[8];
+			ofPoint centroMano = hand[9];
+
+			// BURBUJA 🫧 (Mano cerrada 'pinch' de todos los dedos)
+			bool isHandClosed = getDist(hand[4], hand[8]) < (s * 0.6) && getDist(hand[4], hand[12]) < (s * 0.6);
+
+			if (isHandClosed) {
+				lanzarFigura("burbuja", centroMano);
+			}
+
+			// PEZ 🐟 vs CONEJO 🐰
+			else if (isFingerExtended(hand, 8) && isFingerExtended(hand, 12) && !isFingerExtended(hand, 16) && !isFingerExtended(hand, 20)) {
+				if (isHandHorizontal(hand)) {
+					lanzarFigura("pez", puntaIndice);
+				} else {
+					lanzarFigura("conejo", puntaIndice);
+				}
+			}
+
+			// ESTRELLA ⭐ (Solo índice y pulgar, medio levantado)
+			else if (getDist(hand[4], hand[8]) < (s * 0.5) && getDist(hand[4], hand[12]) > (s * 1.0)) {
+				lanzarFigura("estrella", puntaIndice);
+			}
+
+			// ROCK 🤘
+			else if (isFingerExtended(hand, 8) && !isFingerExtended(hand, 12) && isFingerExtended(hand, 20)) {
+				lanzarFigura("rock", centroMano);
+			}
+
+			// GUSANO 🐛 (Solo meñique)
+			else if (!isFingerExtended(hand, 8) && isFingerExtended(hand, 20)) {
+				lanzarFigura("gusano", hand[20]); // En la punta del meñique
+			}
+
+			// INSULTO 🖕 (Cerrar app)
+			// (¡Cuidado probando esto que se cierra de verdad!)
+			else if (isFingerExtended(hand, 12) && !isFingerExtended(hand, 8) && !isFingerExtended(hand, 16)) {
+				// std::exit(0);
+			}
+		}
+	}
 }
 
 //--------------------------------------------------------------
 void ofApp::draw(){
-	// Dibujar línea separadora
-	ofSetColor(100);
-	ofDrawLine(ofGetWidth() / 2, 0, ofGetWidth() / 2, ofGetHeight());
+	float w = ofGetWidth();
+	float h = ofGetHeight();
 
-	// Pantalla Derecha: La mano (ya ajustamos las coordenadas en update)
+	// 1. DIBUJAR FONDO (Cámara o Negro)
+	ofSetColor(255);
+	if (cam.isInitialized()) {
+		cam.draw(0, 0, w, h);
+	} else {
+		// Si no hay cámara (porque Python la tiene), pintamos gris oscuro
+		ofSetColor(20);
+		ofDrawRectangle(0, 0, w, h);
+
+		ofSetColor(255);
+		ofDrawBitmapString("CAMARA OCUPADA POR PYTHON - MODO VISUALIZACION", 20, 20);
+	}
+
+	// 2. DIBUJAR FIGURAS
+	for (auto & f : figurasActivas) {
+		if (f.imagenRef != nullptr && f.imagenRef->isAllocated()) {
+			ofPushMatrix();
+			ofTranslate(f.pos.x, f.pos.y);
+			float scale = f.sizeScale * 0.3; // Ajusta este 0.3 si son muy grandes/pequeñas
+			ofScale(scale, scale);
+
+			ofSetColor(255); // Reset color
+			f.imagenRef->draw(0, 0);
+			ofPopMatrix();
+		}
+	}
+
+	// 3. MINIATURA HAND TRACKING (Abajo Derecha)
+	float pipW = w / 4.0;
+	float pipH = h / 4.0;
+	float pipX = w - pipW - 10;
+	float pipY = h - pipH - 10;
+
+	// Fondo miniatura
+	ofSetColor(0, 0, 0, 200);
+	ofDrawRectangle(pipX, pipY, pipW, pipH);
+	ofNoFill();
+	ofSetColor(255);
+	ofSetLineWidth(2);
+	ofDrawRectangle(pipX, pipY, pipW, pipH);
+	ofFill();
+
+	// Dibujar esqueletos en miniatura
 	ofSetColor(0, 255, 0);
 	for (auto & p : handPoints) {
-		ofDrawCircle(p.x, p.y, 5); // Quitamos la traslación anterior, ya está mapeado
+		float mx = ofMap(p.x, 0, w, pipX, pipX + pipW);
+		float my = ofMap(p.y, 0, h, pipY, pipY + pipH);
+		ofDrawCircle(mx, my, 4);
 	}
-
-	// Pantalla Izquierda: Figuras generadas
-	
-	ofSetColor(255); // Resetear color a blanco para que los PNG no salgan teñidos
-	for (auto & f : figurasActivas) {
-		ofPushMatrix();
-		ofTranslate(f.pos.x, f.pos.y);
-
-		// Escalar
-		float scale = f.sizeScale * 0.2; // 0.2 porque los PNG suelen ser muy grandes, ajusta si se ven enanos
-		ofScale(scale, scale);
-
-		// Dibujar (ya está centrado por el setAnchorPercent)
-		f.imagenRef->draw(0, 0);
-
-		ofPopMatrix();
-	}
-	ofPopMatrix();
-	
+	// Mostrar información de texto
+	ofDrawBitmapStringHighlight("Modo: Deteccion de Gestos", pipX + 10, pipY - 10);
 }
 
 //--------------------------------------------------------------
@@ -333,7 +333,7 @@ void ofApp::lanzarFigura(string nombreGesto, ofPoint position) {
 			figurasActivas.push_back(f);
 
 			lastSpawnTime = now; //update last spawn time
-			std::cout << "Lanzando figura: " << nombreGesto << std::endl;
+			std::cout << "Gesto detectado: " << nombreGesto << std::endl;
 		}
 	}
 }
